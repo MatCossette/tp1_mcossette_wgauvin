@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: version
         run: npm version minor
-          with:
-            token: ${{secrets.GH_PERSONAL_ACCESS_TOKEN}}
+        with:
+          token: ${{secrets.GH_PERSONAL_ACCESS_TOKEN}}
         working-directory: ./
       - name: checkout
         uses: actions/checkout@v2
