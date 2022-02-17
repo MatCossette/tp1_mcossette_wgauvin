@@ -1,6 +1,6 @@
 {
-  "name": "@MatCossette/tp1_mcossette_wgauvin",
-  "version": "1.3.0",
+  "name": "mcossette-tp1-installation-library",
+  "version": "1.2.0",
   "description": "Simple react component library for school project",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
