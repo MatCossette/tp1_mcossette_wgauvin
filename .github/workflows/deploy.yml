@@ -6,7 +6,19 @@ on:
       - main
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - run: git config --global user.name 'MatCossette'
+      - run: git config --global user.email 'mcossette@edu.cegepgarneau.ca'
+      - run: npm version patch -m "[RELEASE] %s"
+      - run: git push
   deploy:
+    needs: version
     runs-on: ubuntu-latest
     if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
