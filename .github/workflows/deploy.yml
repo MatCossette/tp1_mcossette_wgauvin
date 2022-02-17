@@ -11,11 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
-      - uses: ./
-        with:
-          token: ${{secrets.GH_PERSONAL_ACCESS_TOKEN}}
       - name: version
         run: npm version minor
+          with:
+            token: ${{secrets.GH_PERSONAL_ACCESS_TOKEN}}
         working-directory: ./
       - name: checkout
         uses: actions/checkout@v2
