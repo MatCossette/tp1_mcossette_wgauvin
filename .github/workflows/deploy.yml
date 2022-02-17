@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
-      - name: bump version
-        run: npm version patch -m "[RELEASE] %s"
       - name: checkout
         uses: actions/checkout@v2
       - name: node
@@ -20,6 +18,8 @@ jobs:
         with:
           node-version: "12.x"
           registry-url: "https://registry.npmjs.org"
+      - name: bump version
+        run: npm version patch -m "[RELEASE] %s"
       - name: publish
         run: npm publish --access public
         env:
