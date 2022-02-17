@@ -9,7 +9,6 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
       - name: checkout
         uses: actions/checkout@v2
