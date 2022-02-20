@@ -36,13 +36,17 @@ jobs:
     # needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm ci
-      - run: npm run build-storybook
-      - uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: run ci
+        run: npm ci
+      - name: build
+        run: npm run build-storybook
+      - name: connect ftp
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ftp.mcossette.devwebgarneau.com
           username: mcossette
-          password: JessicaPleau99!
+          password: ${{ secrets.FTP_TOKEN }}
           local-dir: ./storybook-static/
           server-dir: ./public_html/storybook/
