@@ -41,8 +41,8 @@ jobs:
       - run: npm run build-storybook
       - uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: mcossette.devwebgarneau.com
+          server: ftp.mcossette.devwebgarneau.com
           username: mcossette
-          password: ${{ secrets.FTP_TOKEN }}
+          password: JessicaPleau99!
           local-dir: ./storybook-static/
           server-dir: ./public_html/storybook/
