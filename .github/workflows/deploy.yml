@@ -38,6 +38,7 @@ jobs:
     steps:
       - run: npm run build-storybook
       - uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        working-directory: ./
         with:
           server: ftp.mcossette.devwebgarneau.com
           username: mcossette
