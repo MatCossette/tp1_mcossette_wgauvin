@@ -43,6 +43,6 @@ jobs:
         with:
           server: ftp.mcossette.devwebgarneau.com
           username: mcossette
-          password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          password: ${{ secrets.FTP_TOKEN }}
           local-dir: ./storybook-static/
           server-dir: ./public_html/storybook/
