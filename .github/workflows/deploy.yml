@@ -6,29 +6,41 @@ on:
       - main
 
 jobs:
-  version:
+  # version:
+  #   runs-on: ubuntu-latest
+  #   if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+  #     - run: git config user.name "$GITHUB_ACTOR"
+  #     - run: npm version minor -m "v%s"
+  #     - run: VERSION=$(node -p "require('./package.json').version")
+  #     - run: git tag ${VERSION}
+  #     - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
+  #     - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+  # deploy:
+  #   needs: version
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v1
+  #       with:
+  #         node-version: "12.x"
+  #         registry-url: "https://registry.npmjs.org"
+  #     - run: npm ci
+  #     - run: npm run build-lib
+  #     - run: npm publish --access public
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_FOR_TP3}}
+  storybook:
+    # needs: deploy
     runs-on: ubuntu-latest
-    if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
-      - uses: actions/checkout@v2
-      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - run: git config user.name "$GITHUB_ACTOR"
-      - run: npm version minor -m "v%s"
-      - run: VERSION=$(node -p "require('./package.json').version")
-      - run: git tag ${VERSION}
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
-  deploy:
-    needs: version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - run: npm run build-storybook
+      - uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          node-version: "12.x"
-          registry-url: "https://registry.npmjs.org"
-      - run: npm ci
-      - run: npm run build-lib
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_FOR_TP3}}
+          server: ftp.mcossette.devwebgarneau.com
+          username: mcossette
+          password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          local_dir: ./storybook-static/
+          remote_dir: ./public_html/storybook/
