@@ -32,3 +32,34 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_FOR_TP3}}
+  storybook:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run ci
+        run: npm ci
+      - name: build
+        run: npm run build-storybook
+      - name: connect ftp
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ftp.mcossette.devwebgarneau.com
+          username: mcossette
+          password: ${{ secrets.FTP_TOKEN }}
+          local-dir: ./storybook-static/
+          server-dir: ./public_html/storybook/
+  chromatic-deployment:
+    needs: storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
