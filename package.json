@@ -1,6 +1,6 @@
 {
   "name": "mcossette-tp1-installation-library",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Simple react component library for school project",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
