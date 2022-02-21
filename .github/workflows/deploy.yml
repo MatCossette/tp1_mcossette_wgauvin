@@ -19,7 +19,7 @@ jobs:
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
   deploy-package-to-npm:
-    needs: version
+    needs: version-update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_FOR_TP3}}
   deploy-storybook-to-cpanel:
-    needs: deploy
+    needs: deploy-package-to-npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
           local-dir: ./storybook-static/
           server-dir: ./public_html/storybook/
   deploy-storybook-to-chromatic:
-    needs: storybook
+    needs: deploy-storybook-to-cpanel
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
