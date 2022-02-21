@@ -36,8 +36,7 @@ jobs:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: run ci
         run: npm ci
       - name: build
