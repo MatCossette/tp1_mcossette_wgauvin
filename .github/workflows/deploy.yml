@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  version:
+  version-update:
     runs-on: ubuntu-latest
     if: "startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
@@ -18,7 +18,7 @@ jobs:
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
-  deploy:
+  deploy-package-to-npm:
     needs: version
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +32,7 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_FOR_TP3}}
-  storybook:
+  deploy-storybook-to-cpanel:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +49,7 @@ jobs:
           password: ${{ secrets.FTP_TOKEN }}
           local-dir: ./storybook-static/
           server-dir: ./public_html/storybook/
-  chromatic-deployment:
+  deploy-storybook-to-chromatic:
     needs: storybook
     runs-on: ubuntu-latest
     steps:
